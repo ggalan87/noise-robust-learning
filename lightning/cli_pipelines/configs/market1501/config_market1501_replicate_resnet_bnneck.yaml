@@ -1,0 +1,58 @@
+seed_everything: 13
+data:
+  class_path: lightning.data.datamodules.Market1501DataModule
+  init_args:
+    data_dir: "/data/datasets"
+    batch_size: 64
+    train_transforms: lightning.data.default_transforms.Market1501TrainTransforms
+    val_transforms: lightning.data.default_transforms.Market1501TestTransforms
+    test_transforms: lightning.data.default_transforms.Market1501TestTransforms
+    val_split: 0.0
+    num_workers: 7
+    dataset_args:
+      class_path: lightning.data.datamodules.Market1501Args
+      init_args:
+        training_variant: "symmetric_noise_0.5"
+sampler:
+  class_path: torch.utils.data.RandomSampler
+  init_args:
+    replacement: False
+    num_samples: null
+model:
+  class_path: lightning.models.LitResnet
+  init_args:
+    num_channels: 3
+    use_pretrained_weights: True
+    optimizer_class: torch.optim.Adam
+    optimizer_kwargs:
+      lr: 3.5e-04
+    scheduler_class: torch.optim.lr_scheduler.MultiStepLR
+    scheduler_kwargs:
+      milestones:
+        - 40
+        - 70
+      gamma: 0.1
+    loss_class: pytorch_metric_learning.losses.TripletMarginLoss
+    loss_kwargs:
+      margin: 0.0
+    miner_class: pytorch_metric_learning.miners.BatchHardMiner
+    miner_kwargs: null
+    noise_reducer_class: torch_metric_learning.noise_reducers.DefaultNoiseReducer
+    noise_reducer_kwargs: null
+    model_variant: "resnet50"
+    reduced_dim: null
+    loss_weights: {'classification': 1.0, 'metric': 1.0}
+trainer:
+  max_epochs: 80
+  accelerator: "gpu"
+  logger:
+    class_path: pytorch_lightning.loggers.TensorBoardLogger
+    init_args:
+      save_dir: "./lightning_logs"
+  callbacks:
+    - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: "step"
+    - class_path: lightning.ext.PeriodicCheckpoint
+      init_args:
+        every: 1

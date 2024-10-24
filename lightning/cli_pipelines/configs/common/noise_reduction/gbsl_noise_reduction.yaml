@@ -1,0 +1,11 @@
+model:
+  init_args:
+    noise_reducer_class: torch_metric_learning.noise_reducers.GBSLNoiseReducer
+    noise_reducer_kwargs:
+      strategy: torch_metric_learning.noise_reducers.sample_rejection.GraphBasedSelfLearning
+      strategy_kwargs:
+          epochs_frequency: 2
+          with_relabel: True
+      keep_only_good_samples: False
+      memory_size: 0
+      use_pretrained: False

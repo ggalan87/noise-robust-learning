@@ -1,0 +1,69 @@
+seed_everything: 13
+data:
+  class_path: lightning.data.datamodules.Market1501DataModule
+  init_args:
+    data_dir: "/data/datasets"
+    batch_size: 32
+    train_transforms: lightning.data.default_transforms.SoliderTrainTransforms
+    val_transforms: lightning.data.default_transforms.SoliderTransforms
+    test_transforms: lightning.data.default_transforms.SoliderTransforms
+    val_split: 0.0
+    num_workers: 7
+    dataset_args:
+      class_path: lightning.data.datamodules.Market1501Args
+      init_args:
+        training_variant: "symmetric_noise_0.5"
+sampler:
+  class_path: lightning.data.samplers.RandomIdentitySampler
+  init_args:
+    num_instances: 4
+    id_key: 'target'
+    fix_samples: True
+model:
+  class_path: lightning.models.LitSolider
+  init_args:
+    num_channels: 3
+    use_pretrained_weights: True
+    optimizer_class: torch.optim.SGD
+    optimizer_kwargs:
+      lr: 8e-04
+      lr_overrides:
+        type: "arbitrary_children"
+        overrides:
+          - children:
+              - 'bias'
+            lr_multiplier: 2
+          - children:
+              - 'classification_head'
+            lr_multiplier: 2
+      weight_decay: 1e-04
+      momentum: 0.9
+    scheduler_class: pl_bolts.optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+    scheduler_kwargs:
+      warmup_epochs: 20
+      max_epochs: 40
+      warmup_start_lr: 8e-06
+      eta_min: 0.0000016
+    loss_class: pytorch_metric_learning.losses.TripletMarginLoss
+    loss_kwargs:
+      margin: 0.0
+    miner_class: pytorch_metric_learning.miners.BatchHardMiner
+    miner_kwargs: null
+    noise_reducer_class: torch_metric_learning.noise_reducers.DefaultNoiseReducer
+    noise_reducer_kwargs: null
+    model_variant: "swin_tiny_patch4_window7_224"
+    pretrained_weights_path: "/media/amidemo/Data/object_classifier_data/model_zoo/solider_models/swin_tiny_tea.pth"
+trainer:
+  max_epochs: 40
+  accelerator: "gpu"
+  logger:
+    class_path: pytorch_lightning.loggers.TensorBoardLogger
+    init_args:
+      save_dir: "./lightning_logs"
+  callbacks:
+    - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: "step"
+    - class_path: lightning.ext.PeriodicCheckpoint
+      init_args:
+        every: 1
