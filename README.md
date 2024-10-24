@@ -31,9 +31,12 @@ This repository contains the code of the following papers.
 }
 
 @inproceedings{Galanakis2024,
-	author = {Galanakis, George and Zabulis, Xenophon and Argyros, Antonis A},
-	title = {Nearest neighbor-based data denoising for deep metric learning},
-	booktitle = {VISAPP},
-	year = {2024},
-}
+  author = {Galanakis, George and Zabulis, Xenophon and Argyros, Antonis A},
+  title = {Nearest neighbor-based data denoising for deep metric learning},
+  booktitle = {International Conference on Computer Vision Theory and Applications (VISAPP 2024)},
+  publisher = {Scitepress},
+  year = {2024},
+  month = {February},
+  pages = {595--603}
+}  
 ```
