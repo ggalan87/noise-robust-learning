@@ -1,0 +1,2 @@
+# Description 
+The two folders contain scripts which correspond to the results obtained for the corresponding papers. Unfortunately scripts contain hardcoded version numbers which are the sequential numbering produced by pytorch lightning runs and therefore they are not suitable to be run as-is but to get an idea about how training and testing is done.
