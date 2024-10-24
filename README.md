@@ -30,12 +30,10 @@ This repository contains the code of the following papers.
   organization={IEEE}
 }
 
-@article{galanakis2024nearest,
-  title={Nearest Neighbor-Based Data Denoising for Deep Metric Learning},
-  author={Galanakis, George and Zabulis, Xenophon and Argyros, Antonis A},
-  journal={Proceedings Copyright},
-  volume={595},
-  pages={603},
-  year={2024}
+@inproceedings{Galanakis2024,
+	author = {Galanakis, George and Zabulis, Xenophon and Argyros, Antonis A},
+	title = {Nearest neighbor-based data denoising for deep metric learning},
+	booktitle = {VISAPP},
+	year = {2024},
 }
 ```
