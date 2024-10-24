@@ -13,7 +13,6 @@ The scripts which correspond to the experiments reported in the papers can be fo
 
 ## TODO
 * Refactor files and packages
-* Upload experiments scripts
 * Provide / improve documentation
 * Remove custom paths from test/example files
 * Migrate to newer dependencies versions
